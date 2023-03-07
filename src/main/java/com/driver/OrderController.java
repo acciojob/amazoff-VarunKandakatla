@@ -22,14 +22,25 @@ public class OrderController {
     OrderService orderService;
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
+        try{
+            orderService.addOrder(order);
+        }catch(Exception e)
+        {
 
-        orderService.addOrder(order);
+        }
+
         return new ResponseEntity<>("New order added successfully", HttpStatus.CREATED);
     }
 
     @PostMapping("/add-partner/{partnerId}")
     public ResponseEntity<String> addPartner(@PathVariable String partnerId){
-        orderService.addPartner(partnerId);
+        try{
+            orderService.addPartner(partnerId);
+        }
+        catch (Exception e)
+        {
+
+        }
         return new ResponseEntity<>("New delivery partner added successfully", HttpStatus.CREATED);
     }
 
@@ -37,7 +48,13 @@ public class OrderController {
     public ResponseEntity<String> addOrderPartnerPair(@RequestParam String orderId, @RequestParam String partnerId){
 
         //This is basically assigning that order to that partnerId
-        orderService.addOrderPartnerPair(orderId,partnerId);
+        try{
+            orderService.addOrderPartnerPair(orderId,partnerId);
+        }
+        catch(Exception e)
+        {
+
+        }
         return new ResponseEntity<>("New order-partner pair added successfully", HttpStatus.CREATED);
     }
 
@@ -45,8 +62,14 @@ public class OrderController {
     public ResponseEntity<Order> getOrderById(@PathVariable String orderId){
 
         Order order= null;
-        //order should be returned with an orderId.
-        order=orderService.getOrderById(orderId);
+        try{
+            //order should be returned with an orderId.
+            order=orderService.getOrderById(orderId);
+        }
+        catch (Exception e)
+        {
+
+        }
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
@@ -57,7 +80,12 @@ public class OrderController {
         DeliveryPartner deliveryPartner = null;
 
         //deliveryPartner should contain the value given by partnerId
-        deliveryPartner=orderService.getPartnerById(partnerId);
+       try{
+           deliveryPartner=orderService.getPartnerById(partnerId);
+       }catch(Exception e)
+       {
+
+       }
 
         return new ResponseEntity<>(deliveryPartner, HttpStatus.CREATED);
     }
@@ -75,7 +103,12 @@ public class OrderController {
     @GetMapping("/get-orders-by-partner-id/{partnerId}")
     public ResponseEntity<List<String>> getOrdersByPartnerId(@PathVariable String partnerId){
         List<String> orders = null;
-        orders=orderService.getOrdersByPartnerId(partnerId);
+        try{
+            orders=orderService.getOrdersByPartnerId(partnerId);
+        }
+        catch(Exception e){
+
+        }
         //orders should contain a list of orders by PartnerId
 
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
