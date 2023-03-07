@@ -2,6 +2,7 @@ package com.driver;
 
 import java.util.List;
 
+import com.sun.jdi.event.ExceptionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,10 +62,10 @@ public class OrderController {
     @GetMapping("/get-order-by-id/{orderId}")
     public ResponseEntity<Order> getOrderById(@PathVariable String orderId){
 
-        Order order= null;
+        Order order= orderService.getOrderById(orderId);
         try{
             //order should be returned with an orderId.
-            order=orderService.getOrderById(orderId);
+            order.getId();
         }
         catch (Exception e)
         {
@@ -77,11 +78,11 @@ public class OrderController {
     @GetMapping("/get-partner-by-id/{partnerId}")
     public ResponseEntity<DeliveryPartner> getPartnerById(@PathVariable String partnerId){
 
-        DeliveryPartner deliveryPartner = null;
+        DeliveryPartner deliveryPartner = orderService.getPartnerById(partnerId);;
 
         //deliveryPartner should contain the value given by partnerId
        try{
-           deliveryPartner=orderService.getPartnerById(partnerId);
+           deliveryPartner.getId();
        }catch(Exception e)
        {
 
@@ -102,9 +103,9 @@ public class OrderController {
 
     @GetMapping("/get-orders-by-partner-id/{partnerId}")
     public ResponseEntity<List<String>> getOrdersByPartnerId(@PathVariable String partnerId){
-        List<String> orders = null;
+        List<String> orders = orderService.getOrdersByPartnerId(partnerId);
         try{
-            orders=orderService.getOrdersByPartnerId(partnerId);
+            orders.size();
         }
         catch(Exception e){
 
@@ -116,9 +117,15 @@ public class OrderController {
 
     @GetMapping("/get-all-orders")
     public ResponseEntity<List<String>> getAllOrders(){
-        List<String> orders = null;
+        List<String> orders=null;
 
-        orders=orderService.getAllOrders();
+        try{
+//            orders.size();
+            orders = orderService.getAllOrders();
+        }
+        catch(Exception e){
+
+        }
 
         //Get all orders
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
@@ -129,7 +136,12 @@ public class OrderController {
         Integer countOfOrders = 0;
 
         //Count of orders that have not been assigned to any DeliveryPartner
-        countOfOrders=orderService.getCountOfUnassignedOrders();
+        try{
+            countOfOrders=orderService.getCountOfUnassignedOrders();
+        }
+        catch (Exception e){
+
+        }
 
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
@@ -138,7 +150,12 @@ public class OrderController {
     public ResponseEntity<Integer> getOrdersLeftAfterGivenTimeByPartnerId(@PathVariable String time, @PathVariable String partnerId){
 
         Integer countOfOrders = 0;
-        countOfOrders=orderService.getOrdersLeftAfterGivenTimeByPartnerId(time,partnerId);
+      try{
+          countOfOrders=orderService.getOrdersLeftAfterGivenTimeByPartnerId(time,partnerId);
+      }
+      catch(Exception e){
+
+      }
 
         //countOfOrders that are left after a particular time of a DeliveryPartner
 
@@ -150,7 +167,12 @@ public class OrderController {
         String time = null;
 
         //Return the time when that partnerId will deliver his last delivery order.
-        time=orderService.getLastDeliveryTimeByPartnerId(partnerId);
+        try{
+            time=orderService.getLastDeliveryTimeByPartnerId(partnerId);
+        }
+        catch (Exception e){
+
+        }
 
         return new ResponseEntity<>(time, HttpStatus.CREATED);
     }
@@ -161,7 +183,12 @@ public class OrderController {
         //Delete the partnerId
         //And push all his assigned orders to unassigned orders.
 
-        orderService.deletePartnerById(partnerId);
+        try{
+            orderService.deletePartnerById(partnerId);
+        }
+        catch (Exception e){
+
+        }
 
         return new ResponseEntity<>(partnerId + " removed successfully", HttpStatus.CREATED);
     }
@@ -171,8 +198,12 @@ public class OrderController {
 
         //Delete an order and also
         // remove it from the assigned order of that partnerId
+        try{
 
-        orderService.deleteOrderById(orderId);
+            orderService.deleteOrderById(orderId);
+        }catch (Exception e){
+
+        }
 
         return new ResponseEntity<>(orderId + " removed successfully", HttpStatus.CREATED);
     }

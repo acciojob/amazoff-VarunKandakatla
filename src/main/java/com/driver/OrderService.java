@@ -37,7 +37,14 @@ public class OrderService {
 
     public int getOrderCountByPartnerId(String partnerId)
     {
-        return orderRepository.getOrderCountByPartnerId(partnerId);
+        int a=0;
+        try{
+            a=orderRepository.getOrderCountByPartnerId(partnerId);
+        }
+        catch (Exception e){
+            return 0;
+        }
+        return a;
     }
 
     public List<String> getOrdersByPartnerId(String partnerId)
