@@ -6,8 +6,7 @@ public class Order {
 
     private String id;
     private int deliveryTime;
-@Autowired
-    OrderRepository orderRepository;
+
     public Order(String id, String deliveryTime) {
 
         // The deliveryTime has to converted from string to int and then stored in the attribute
@@ -20,7 +19,7 @@ public class Order {
 
         this.deliveryTime=hours*60+mins;
 
-        orderRepository.OrderDeliveryTime.put(this.deliveryTime,deliveryTime);
+        OrderRepository.OrderDeliveryTime.put(this.deliveryTime,deliveryTime);
     }
 
     public String getId() {

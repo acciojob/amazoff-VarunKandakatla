@@ -12,7 +12,7 @@ import java.util.Map;
 public class OrderRepository {
 
     Map<String,Order> orderMap=new HashMap<>();
-    Map<Integer,String> OrderDeliveryTime=new HashMap<>();
+    static Map<Integer,String> OrderDeliveryTime=new HashMap<>();
     List<Order> orderList=new ArrayList<>();
     Map<String,DeliveryPartner> deliveryPartnerMap=new HashMap<>();
     List<DeliveryPartner> deliveryPartnerList=new ArrayList<>();
@@ -22,11 +22,11 @@ public class OrderRepository {
 
     public void addOrder(Order order)
     {
-        if(!orderMap.containsKey(order.getId()))
-        {
+//        if(!orderMap.containsKey(order.getId()))
+//        {
             orderMap.put(order.getId(),order);
             orderList.add(order);
-        }
+//        }
     }
 
     public void addPartner(String partnerId)
@@ -45,11 +45,11 @@ public class OrderRepository {
         if(orderMap.containsKey(orderId) && deliveryPartnerMap.containsKey(partnerId))
         {
             orderPartnerPairMap.put(orderId,partnerId);
-            if(partnerOrders.get(partnerId).contains(orderId))
-            {
-                partnerOrders.get(partnerId).remove(orderId);
-                deliveryPartnerMap.get(partnerId).setNumberOfOrders(partnerOrders.get(partnerId).size());
-            }
+//            if(partnerOrders.get(partnerId).contains(orderId))
+//            {
+//                partnerOrders.get(partnerId).remove(orderId);
+//                deliveryPartnerMap.get(partnerId).setNumberOfOrders(partnerOrders.get(partnerId).size());
+//            }
             partnerOrders.get(partnerId).add(orderId);
             deliveryPartnerMap.get(partnerId).setNumberOfOrders(partnerOrders.get(partnerId).size());
         }
@@ -57,12 +57,18 @@ public class OrderRepository {
 
     public Order getOrderById(String orderId)
     {
-        return orderMap.get(orderId);
+        if(orderMap.containsKey(orderId))
+            return orderMap.get(orderId);
+
+        return null;
     }
 
     public DeliveryPartner getPartnerById(String partnerId)
     {
+        if(deliveryPartnerMap.containsKey(partnerId))
         return deliveryPartnerMap.get(partnerId);
+
+        return null;
     }
 
     public int getOrderCountByPartnerId(String partnerId)
